@@ -1,94 +1,99 @@
 import { motion } from "framer-motion";
+import { FaCode, FaRocket, FaVideo, FaChartLine } from "react-icons/fa";
 
 const services = [
   {
-    icon: "🖌️",
-    title: "Branding",
+    icon: <FaCode className="text-indigo-400" />,
+    title: "Full-Stack Development",
     subtitle:
-      "We craft iconic brands with purpose and personality.\nExperience 2x more brand recall.",
+      "Building robust MERN stack applications with clean architecture.\nSpecializing in scalable REST APIs and responsive UIs.",
   },
   {
-    icon: "💻",
-    title: "Web Development",
+    icon: <FaVideo className="text-pink-500" />,
+    title: "VFX & Digital Media",
     subtitle:
-      "Responsive, blazing fast websites.\nBoost your site speed by 3x.",
+      "High-end 4K video editing and realistic CGI/VFX production.\nTransforming concepts into viral social media content.",
   },
   {
-    icon: "🔑",
-    title: "Marketing Strategy",
-    subtitle: "Unlock powerful growth campaigns.\nAchieve 4x customer reach.",
+    icon: <FaChartLine className="text-green-400" />,
+    title: "Digital Marketing (CREVONX)",
+    subtitle:
+      "Strategic brand growth and lead generation through CREVONX.\nOptimizing social media presence for maximum impact.",
+  },
+  {
+    icon: <FaRocket className="text-yellow-400" />,
+    title: "Automation & Tech Solutions",
+    subtitle:
+      "Leveraging OCI AI and modern tools to automate workflows.\nImproving efficiency with smart tech integration.",
   },
 ];
 
 export default function Service() {
   return (
-    <div className="relative py-16 bg-black text-white">
-      <div className="w-full max-w-4xl mx-auto flex flex-col items-center px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-white">
-          My Services
-        </h2>
-        {services.map((service, idx) => {
-          const isLeft = idx % 2 === 0;
-          return (
-            <div
-              key={idx}
-              className="relative w-full flex flex-col items-center group">
-              <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className={`w-[90%] md:w-[60%] p-6 rounded-2xl my-6 bg-white/10 backdrop-blur-md border border-white/20 shadow-xl transition hover:shadow-[0_0_20px_#00f2ff88] 
-                ${isLeft ? "self-start" : "self-end"} cursor-pointer`}>
-                <motion.div
-                  initial={{ rotate: -10 }}
-                  whileHover={{ rotate: 0, scale: 1.2 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="text-4xl">
-                  {service.icon}
-                </motion.div>
-                <h3 className="text-2xl font-bold mt-10 text-white">
-                  {service.title}
-                </h3>
-                <p className="text-sm text-green-300 mt-2 whitespace-pre-line leading-snug">
-                  {service.subtitle}
-                </p>
-              </motion.div>
+    <div
+      id="services"
+      className="relative py-24 bg-[#050505] text-white overflow-hidden">
+      {/* Background Ambient Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_50%,#1a1a2e_0%,transparent_70%)] opacity-50" />
 
-              {/* SVG Connector */}
-              {idx < services.length - 1 && (
-                <svg
-                  className="absolute left-1/2 top-full -translate-x-1/2 h-24 w-20 z-0"
-                  viewBox="0 0 100 100"
-                  fill="none">
-                  <motion.path
-                    d={
-                      isLeft
-                        ? "M0,0 C50,50 50,50 100,100"
-                        : "M100,0 C50,50 50,50 0,100"
-                    }
-                    stroke="url(#grad)"
-                    strokeWidth="4"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 0.6 }}
-                  />
-                  <defs>
-                    <linearGradient
-                      id="grad"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%">
-                      <stop offset="0%" stopColor="#00f2ff" />
-                      <stop offset="100%" stopColor="#0aff95" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-              )}
-            </div>
-          );
-        })}
+      <div className="relative w-full max-w-5xl mx-auto flex flex-col items-center px-6 z-10">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
+            Expertise & Services
+          </h2>
+          <p className="text-gray-400 mt-4 font-mono text-sm tracking-widest uppercase">
+            Bridging Technology & Creativity
+          </p>
+        </motion.div>
+
+        <div className="w-full flex flex-col items-center">
+          {services.map((service, idx) => {
+            const isLeft = idx % 2 === 0;
+            return (
+              <div
+                key={idx}
+                className="relative w-full flex flex-col items-center">
+                <motion.div
+                  initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, ease: "circOut" }}
+                  className={`
+                    w-full md:w-[70%] p-8 rounded-3xl my-4
+                    bg-white/[0.03] backdrop-blur-xl border border-white/10
+                    hover:bg-white/[0.06] hover:border-white/20
+                    transition-all duration-500 group shadow-2xl
+                    ${isLeft ? "md:self-start" : "md:self-end"}
+                  `}>
+                  <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                    <motion.div
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="text-5xl p-4 rounded-2xl bg-white/[0.05] border border-white/5 shadow-inner">
+                      {service.icon}
+                    </motion.div>
+
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-semibold text-white group-hover:text-indigo-400 transition-colors">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-400 mt-3 text-sm md:text-base whitespace-pre-line leading-relaxed">
+                        {service.subtitle}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* iOS Style Curved Connector Line */}
+                {idx < services.length - 1 && (
+                  <div className="hidden md:block h-20 w-px bg-gradient-to-b from-indigo-500/50 to-transparent my-2" />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
