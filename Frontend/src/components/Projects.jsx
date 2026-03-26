@@ -3,42 +3,45 @@ import {
   FaReact,
   FaNodeJs,
   FaDatabase,
-  FaCss3Alt,
-  FaFire,
+  FaGithub,
+  FaExternalLinkAlt,
 } from "react-icons/fa";
-import { SiExpress, SiTailwindcss, SiRedux } from "react-icons/si";
-import JobPortal from "../assets/JobPortal.png";
-import food from "../assets/food.png";
+import {
+  SiExpress,
+  SiTailwindcss,
+  SiMongodb,
+  SiJsonwebtokens,
+} from "react-icons/si";
+import JobPortalImg from "../assets/JobPortal.png";
+import MatchMateImg from "../assets/MatchMate.png"; // Make sure to add this asset
 
-// Icon mapping
 const techIcons = {
   React: <FaReact className="text-blue-400" />,
   "Node.js": <FaNodeJs className="text-green-400" />,
-  MongoDB: <FaDatabase className="text-green-300" />,
+  MongoDB: <SiMongodb className="text-green-500" />,
   Express: <SiExpress className="text-white" />,
   Tailwind: <SiTailwindcss className="text-cyan-400" />,
-  Redux: <SiRedux className="text-purple-400" />,
-  Firebase: <FaFire className="text-yellow-400" />,
-  CSS: <FaCss3Alt className="text-blue-300" />,
+  JWT: <SiJsonwebtokens className="text-pink-400" />,
 };
 
-// Project list
 const projects = [
+  {
+    title: "MatchMate: Student Networking",
+    description:
+      "A full-stack MERN application helping students find roommates based on lifestyle preferences, hobbies, and routines using complex MongoDB aggregation logic[cite: 25, 27, 28].",
+    tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind"],
+    image: MatchMateImg,
+    link: "#", // Add your MatchMate link here [cite: 26]
+    github: "https://github.com/esnishant",
+  },
   {
     title: "Job Portal Website",
     description:
-      "A MERN stack job platform for recruiters and students with authentication and filters.",
-    tech: ["React", "Node.js", "MongoDB", "Express", "Tailwind"],
-    image: JobPortal,
+      "Comprehensive platform for recruiters and students featuring JWT authentication, resume uploads, and advanced job filtering[cite: 20, 22, 23].",
+    tech: ["React", "Node.js", "MongoDB", "Express", "JWT"],
+    image: JobPortalImg,
     link: "https://job-portal-website-p1.netlify.app/",
-  },
-  {
-    title: "Food Delivery App",
-    description:
-      "React-based food ordering UI with cart, filters and Firebase backend.",
-    tech: ["React", "Redux", "Tailwind", "Firebase"],
-    image: food,
-    link: "https://yourfoodapp.netlify.app",
+    github: "https://github.com/esnishant",
   },
 ];
 
@@ -48,69 +51,80 @@ const Projects = () => {
   return (
     <section
       id="projects"
-      className="bg-black text-white px-4 sm:px-6 md:px-20 py-16">
-      <h2 className="text-3xl font-bold text-center mb-12 text-white">
-        My Projects
-      </h2>
+      className="bg-[#050505] text-white px-6 md:px-20 py-24">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-16">
+          Selected <span className="text-indigo-500">Works</span>
+        </h2>
 
-      <div className="space-y-12">
-        {projects.map((project, idx) => (
-          <div
-            key={idx}
-            className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-md shadow-white/10 hover:shadow-indigo-500/20 flex flex-col lg:flex-row transition duration-300">
-            {/* Left Side: Text */}
-            <div className="p-6 w-full lg:w-1/2 flex flex-col justify-between gap-4">
-              <div>
-                <h3 className="text-2xl font-bold mb-2 text-white">
-                  {project.title}
-                </h3>
-                <p className="text-gray-400 text-sm">{project.description}</p>
-
-                {/* Tech Icons */}
-                <div className="flex flex-wrap mt-4 gap-4">
-                  {project.tech.map((tech, i) => (
-                    <div
-                      key={i}
-                      className="group relative text-xl p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition">
-                      {techIcons[tech]}
-                      <span className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 text-xs bg-white text-black rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
-                        {tech}
-                      </span>
-                    </div>
-                  ))}
+        <div className="grid grid-cols-1 gap-16">
+          {projects.map((project, idx) => (
+            <div
+              key={idx}
+              className="group relative flex flex-col lg:flex-row items-center gap-10 bg-[#0a0a0a] border border-white/5 p-4 rounded-3xl hover:border-indigo-500/30 transition-all duration-500">
+              {/* Image Side */}
+              <div
+                className="w-full lg:w-3/5 overflow-hidden rounded-2xl aspect-video relative"
+                onMouseEnter={() => setHoveredIndex(idx)}
+                onMouseLeave={() => setHoveredIndex(null)}>
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className={`w-full h-full object-cover transition-transform duration-700 ${
+                    hoveredIndex === idx ? "scale-110 blur-[2px]" : "scale-100"
+                  }`}
+                />
+                <div
+                  className={`absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-500 ${
+                    hoveredIndex === idx ? "opacity-100" : "opacity-0"
+                  }`}>
+                  <div className="flex gap-4">
+                    <a
+                      href={project.github}
+                      className="p-3 bg-white text-black rounded-full hover:bg-indigo-500 hover:text-white transition-colors">
+                      <FaGithub size={20} />
+                    </a>
+                    <a
+                      href={project.link}
+                      className="p-3 bg-white text-black rounded-full hover:bg-indigo-500 hover:text-white transition-colors">
+                      <FaExternalLinkAlt size={20} />
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              {/* Visit Button */}
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-6 inline-block bg-white text-black hover:bg-indigo-600 hover:text-white font-semibold text-sm px-6 py-2 rounded-full transition w-fit max-w-full sm:max-w-sm">
-                Visit Project →
-              </a>
-            </div>
-
-            {/* Right Side: Image */}
-            <div
-              onMouseEnter={() => setHoveredIndex(idx)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className="relative w-full lg:w-1/2 h-60 sm:h-72 md:h-80 lg:h-auto">
-              <img
-                src={project.image}
-                alt={project.title}
-                className={`w-full h-full object-cover transition duration-500 ${
-                  hoveredIndex === idx ? "opacity-30 blur-sm scale-105" : ""
-                }`}
-              />
-              {hoveredIndex === idx && (
-                <div className="absolute inset-0 flex items-center justify-center text-indigo-400 font-bold text-xl transition-opacity text-center px-4">
+              {/* Content Side */}
+              <div className="w-full lg:w-2/5 space-y-6 px-4">
+                <h3 className="text-3xl font-bold group-hover:text-indigo-400 transition-colors">
                   {project.title}
+                </h3>
+                <p className="text-gray-400 leading-relaxed italic">
+                  "{project.description}"
+                </p>
+
+                <div className="flex flex-wrap gap-4">
+                  {project.tech.map((tech, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10 text-sm font-mono">
+                      {techIcons[tech]} {tech}
+                    </div>
+                  ))}
                 </div>
-              )}
+
+                <div className="pt-4">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-indigo-400 font-semibold hover:underline">
+                    View Live Project <FaExternalLinkAlt size={14} />
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

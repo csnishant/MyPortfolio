@@ -1,19 +1,23 @@
+import EducationCertifications from "../components/Certifications";
 import Contact from "../components/Contact";
+import Experience from "../components/Experience";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
 import Projects from "../components/Projects";
-import Services from "../components/Services";
+import SkillSection from "../components/SkillSection";
+
 function Home() {
   return (
     <>
       <Header />
-     
       <Hero />
-      <Services />
+      <Experience />
+      <SkillSection />
+      <EducationCertifications/>
       <Projects />
       <Contact />
-      <Footer/>
+      
     </>
   );
 }
