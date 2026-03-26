@@ -1,165 +1,139 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { FiGithub, FiInstagram, FiLinkedin, FiMenu, FiX } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
-  const [showNavbar, setShowNavbar] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+
+  const navLinks = [
+    { name: "Home", href: "#home" },
+    { name: "Experience", href: "#experience" },
+    { name: "Skills", href: "#skills" },
+    { name: "Education", href: "#certifications" },
+    { name: "Projects", href: "#projects" },
+    { name: "Contact", href: "#contact" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > lastScrollY && window.scrollY > 60) {
-        setShowNavbar(false);
-      } else {
-        setShowNavbar(true);
+      const sections = navLinks.map((link) => link.href.substring(1));
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 400 && rect.bottom >= 400) {
+            setActiveSection(section);
+          }
+        }
       }
-      setLastScrollY(window.scrollY);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const scrollTo = (e, id) => {
+    e.preventDefault();
+    document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+    setOpen(false);
+  };
 
   return (
     <>
-      {/* HEADER */}
-      <header
-        className={`fixed top-0 w-full z-50  dark:bg-black/30 backdrop-blur transition-transform duration-300 ${
-          showNavbar ? "translate-y-0" : "-translate-y-full"
-        }`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
+      {/* --- TOP BRANDING --- */}
+      <header className="fixed top-0 w-full z-[100] py-8 px-10 pointer-events-none">
+        <div className="flex justify-between items-center pointer-events-auto">
           <motion.div
-            initial={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 100,
-              damping: 25,
-              delay: 0.3,
-              duration: 1.2,
-            }}
-            className="flex items-center">
-            <span className="text-xl font-bold bg-gradient-to-r">CREVONX</span>
+            className="text-white/30 text-[10px] tracking-[0.6em] font-light uppercase">
+            Nishant Choudhary
           </motion.div>
-
-          {/* Desktop Navigation */}
-          <nav className="lg:flex hidden space-x-8">
-            {["Home", "About", "Projects", "Experience", ].map(
-              (item, index) => (
-                <motion.div
-                  key={item}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 100,
-                    damping: 20,
-                    delay: 0.7 + index * 0.2,
-                  }}>
-                  <Link
-                    to={ item==="Home" ? "/" :`/${item.toLowerCase()}`} // ➤ like /about
-                    className="relative text-gray-200 dark:text-gray-200 hover:text-violet-400 font-medium transition-colors duration-300 group">
-                    {item}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-violet-600 group-hover:w-full transition-all"></span>
-                  </Link>
-                </motion.div>
-              )
-            )}
-          </nav>
-
-          {/* Desktop Social + Button */}
-          <div className="md:flex hidden items-center space-x-4">
-            {[FiGithub, FiLinkedin, FiInstagram].map((Icon, idx) => (
-              <motion.a
-                key={idx}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.3, duration: 0.8 }}
-                className="text-agray-700 dark:text-gray-300 hover:text-violet-600"
-                href="#">
-                <Icon className="w-5 h-5" />
-              </motion.a>
-            ))}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 1.6,
-                duration: 0.8,
-                type: "spring",
-              }}
-              className="ml-4 px-4 py-2 rounded-xl bg-gradient-to-r from-gray-400 to-gray-100 text-violet-700 font-bold hover:from-violet-700 hover:to-purple-700 hover:text-white transition-all duration-500">
-              Hire me
-            </motion.button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center z-[60]">
-            <motion.button
-              whileTap={{ scale: 0.7 }}
-              onClick={toggleMenu}
-              className="text-gray-200 dark:text-gray-200">
-              {isOpen ? (
-                <FiX className="h-6 w-6" />
-              ) : (
-                <FiMenu className="h-6 w-6" />
-              )}
-            </motion.button>
-          </div>
         </div>
       </header>
 
-      {/* OVERLAY for Mobile Menu */}
-      {/* {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )} */}
+      {/* --- CENTER-RIGHT FLOATING NAVIGATOR --- */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-[200] flex flex-col items-end">
+        {/* Expandable Menu Items */}
+        <div className="relative flex flex-col items-end">
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                initial={{ opacity: 0, y: 0, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col gap-5 pr-4 text-right">
+                {navLinks.map((link, i) => {
+                  const isActive = activeSection === link.href.substring(1);
+                  return (
+                    <motion.a
+                      key={link.name}
+                      href={link.href}
+                      onClick={(e) => scrollTo(e, link.href)}
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className={`text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 ${
+                        isActive
+                          ? "text-violet-400 scale-110"
+                          : "text-white/30 hover:text-white"
+                      }`}>
+                      {link.name}
+                    </motion.a>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-      {/* SIDEBAR for Mobile */}
-      <motion.div
-        initial={{ x: "100%" }}
-        animate={{ x: isOpen ? "0%" : "100%" }}
-        transition={{ type: "spring", stiffness: 120, damping: 20 }}
-        className="fixed top-0 right-0 h-full w-72   dark:bg-black/30 backdrop-blur  shadow-2xl z-[40] p-6 flex flex-col space-y-4 md:hidden">
-        <div className="flex flex-col space-y-4 mt-12">
-          {["Home", "About", "Experience", ].map((item, index) => (
-            <React.Fragment key={index}>
-              <Link
-                to={item === "Home" ? "/" : `/${item.toLowerCase()}`} // ➤ like /about
-                className="relative text-gray-200 dark:text-gray-200 hover:text-violet-400 font-medium transition-colors duration-300 group">
-                {item}
-              </Link>
-              {index !== 4 && (
-                <hr className="border-gray-700 dark:border-gray-200" />
-              )}
-            </React.Fragment>
-          ))}
+          {/* THE MASTER GRADIENT DOT (Center Right) */}
+          <motion.div
+            onClick={() => setOpen(!open)}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+            className="relative w-4 h-12 md:w-5 md:h-16 flex items-center justify-center cursor-pointer pointer-events-auto">
+            {/* Pulsing Glow Layer (Light band chalu-band feel) */}
+            <motion.div
+              animate={{
+                opacity: [0.3, 0.8, 0.3],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute inset-0 rounded-full blur-md bg-gradient-to-b from-violet-600 via-fuchsia-500 to-indigo-600 shadow-[0_0_30px_rgba(139,92,246,0.4)]"
+            />
+
+            {/* Solid Gradient Core */}
+            <div
+              className={`w-full h-full rounded-full transition-all duration-700 ${
+                open
+                  ? "bg-white"
+                  : "bg-gradient-to-b from-violet-500 via-purple-500 to-blue-500"
+              } border border-white/20`}
+            />
+
+            {/* Visual Indicator: Tiny dot inside if closed */}
+            {!open && (
+              <div className="absolute w-1 h-1 bg-white rounded-full animate-bounce" />
+            )}
+          </motion.div>
         </div>
+      </div>
 
-        {/* Social Icons */}
-        <div className="flex justify-center space-x-4 mt-6">
-          {[FiGithub, FiLinkedin, FiInstagram].map((Icon, idx) => (
-            <a
-              key={idx}
-              href="#"
-              className="text-gray-700 dark:text-gray-300 hover:text-violet-600">
-              <Icon className="w-5 h-5" />
-            </a>
-          ))}
-        </div>
-
-        {/* Hire Me Button */}
-        <button className="mt-6 px-4 py-2 rounded-xl bg-gradient-to-r from-gray-400 to-gray-100 text-violet-700 font-bold hover:from-violet-700 hover:to-purple-700 hover:text-white transition-all duration-500">
-          Hire me
-        </button>
-      </motion.div>
+      {/* --- GLOBAL BLUR OVERLAY (When Open) --- */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-[150]"
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 };
